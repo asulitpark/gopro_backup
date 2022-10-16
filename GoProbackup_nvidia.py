@@ -12,7 +12,8 @@ def encode_h265(filename):
           '-c:a copy ' 
           # video codec
           '-c:v hevc_nvenc -profile:v main10 -b:v ' + VIDEO_BITRATE + ' '  
-          '-map_metadata 0 ' # meta data
+          # meta data
+          '-map_metadata 0 '
           '' + BACKUP_PATH + '/' + filename + ''
            )
     print(cmd)
