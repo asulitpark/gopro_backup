@@ -6,5 +6,10 @@
 this script reduce size by h265 video encoding with GPU. h265 video codec use too many cpu power so that is not use in real world.
 
 ## Require
-ffmpeg : https://ffmpeg.org/download.html
-PC with nvidia graphic card
+* python
+* ffmpeg : https://ffmpeg.org/download.html
+* PC with nvidia graphic card
+
+## How to use
+* modify path in GoProbackup_nvidia.py
+* `python GoProbackup_nvidia.py`
