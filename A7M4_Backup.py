@@ -1,4 +1,5 @@
 import os
+import win32file
 
 GOPRO_PATH = 'J:/DCIM/100GOPRO'
 BACKUP_PATH = 'Y:/GoPro'
@@ -18,6 +19,7 @@ def encode_h265(filename):
            )
     print(cmd)
     os.system(cmd)
+    os.path.
 
 for each in os.listdir(GOPRO_PATH):
 	if each.endswith(".MP4"):		
