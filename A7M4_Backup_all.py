@@ -1,9 +1,9 @@
 import os
 
-A7M4_PATH = "Y:/A7M4-복사-5"
+DRIVE="D:"
+A7M4_PATH = f"{DRIVE}/test"
 VIDEO_BITRATE = '20M'
-# VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
-VIDEO_CODEC = 'h264_nvenc -profile:v high'
+VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
 
 def encode(fromFile, toFile):
     cmd = ('ffmpeg -y -hwaccel cuda '
@@ -31,7 +31,7 @@ def overwriteCreateTime(fromFile, toFile):
 def traverse_directories(root_dir):
     for dirpath, dirnames, filenames in os.walk(root_dir):
         print("현재 디렉토리:", dirpath)
-        targetDir = dirpath.replace("Y:/", "Y:/stabilization/")
+        targetDir = dirpath.replace(f"{DRIVE}/", f"{DRIVE}/stabilization/")
         print("대상 디렉토리:", targetDir)
 
         # 현재 디렉토리의 파일 출력
