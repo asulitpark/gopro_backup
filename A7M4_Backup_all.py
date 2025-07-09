@@ -1,7 +1,9 @@
 import os
 
-DRIVE="D:"
-A7M4_PATH = f"{DRIVE}/test"
+DRIVE="Y:"
+
+# A7M4_PATH = f"{DRIVE}/work/china/A7M4"
+A7M4_PATH = f"{DRIVE}/work/A7M4"
 VIDEO_BITRATE = '20M'
 VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
 
