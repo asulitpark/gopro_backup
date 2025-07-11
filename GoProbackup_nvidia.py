@@ -3,7 +3,8 @@ import os
 DRIVE="Y:"
 
 A7M4_PATH = f"{DRIVE}/work/GoPro"
-VIDEO_BITRATE = '20M'
+VIDEO_BITRATE = '30M'
+MAX_VIDEO_BITRATE = '40M'
 VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
 
 def encode(fromFile, toFile):
@@ -12,10 +13,14 @@ def encode(fromFile, toFile):
           # audio codec
           '-c:a copy ' 
           # video codec
-          '-c:v hevc_nvenc -profile:v main10 -b:v ' + VIDEO_BITRATE + ' '  
-          '-preset slow '  
-          '-rc vbr '  
-          '-rc-lookahead 32 '  
+          '-c:v hevc_nvenc '  
+          '-pix_fmt p010le -profile:v main10 '
+          '-preset p7 -tune hq '
+          # '-rc vbr_hq -b:v ' + VIDEO_BITRATE + ' -maxrate ' + MAX_VIDEO_BITRATE + ' -bufsize ' + MAX_VIDEO_BITRATE + ' '
+          '-rc vbr_hq -cq 17 -b:v 0 -maxrate 0 '
+          '-g 300 -keyint_min 60 '
+          '-spatial_aq 1 -aq-strength 10 '
+          '-rc-lookahead 32 '
           # meta data
           '-map_metadata 0 '
           '"' + toFile + '"'
