@@ -1,24 +1,28 @@
 import os
 
-FROM_DRIVE="C:"
-TO_DRIVE="D:"
+DRIVE="Y:"
 
-# SOURCE_PATH = f"{DRIVE}/work/china/A7M4"
-SOURCE_PATH = f"{FROM_DRIVE}/X7_Raw"
-# h264
-# VIDEO_CODEC = '-vf "scale=1920:1080" h264_nvenc -preset p7 -b:v 5M -maxrate 6M -bufsize 10M -rc:v vbr -cq 19 -profile:v high -pix_fmt yuv420p'
-
-# h265
-VIDEO_CODEC = '-vf "scale=1920:1080" -c:v hevc_nvenc -preset p7 -b:v 5M -maxrate 6M -bufsize 10M -rc vbr_hq -cq 17 -profile:v main10 -pix_fmt yuv420p'
-AUDIO_CODEC = '-c:a aac -b:a 128k'
-SUBTITLE_CODEC = '-c:s copy'
+DIR_NAME="DJIAction5"
+SOURCE_PATH = f"{DRIVE}/work/{DIR_NAME}"
+VIDEO_BITRATE = '20M'
+VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
 
 def encode(fromFile, toFile):
-    cmd = ('ffmpeg -y '
+    cmd = ('ffmpeg -y -hwaccel cuda '
           '-i "' + fromFile + '" '
-          '' + VIDEO_CODEC + ' '  
-          '' + AUDIO_CODEC + ' '  
-          '' + SUBTITLE_CODEC + ' '
+          # audio codec
+          '-c:a copy ' 
+          # video codec
+          '-c:v hevc_nvenc '  
+          '-pix_fmt p010le -profile:v main10 '
+          '-preset p7 -tune hq '
+          # '-rc vbr_hq -b:v ' + VIDEO_BITRATE + ' -maxrate ' + MAX_VIDEO_BITRATE + ' -bufsize ' + MAX_VIDEO_BITRATE + ' '
+          '-rc vbr_hq -cq 17 -b:v 0 -maxrate 0 '
+          '-g 300 -keyint_min 60 '
+          '-spatial_aq 1 -aq-strength 10 '
+          '-rc-lookahead 32 '
+          # meta data
+          '-map_metadata 0 '
           '"' + toFile + '"'
            )
     print(cmd)
@@ -30,13 +34,14 @@ def overwriteCreateTime(fromFile, toFile):
 
 def traverse_directories(root_dir):
     for dirpath, dirnames, filenames in os.walk(root_dir):
+        dirpath = dirpath.replace("\\", "/")
         print("현재 디렉토리:", dirpath)
-        targetDir = dirpath.replace(f"{FROM_DRIVE}/", f"{TO_DRIVE}/X7/")
+        targetDir = dirpath.replace(f"{DRIVE}/", f"{DRIVE}/{DIR_NAME}/")
         print("대상 디렉토리:", targetDir)
 
         # 현재 디렉토리의 파일 출력
         for each in filenames:
-            if each.startswith("._") == False and (each.lower().endswith(".mp4") or each.lower().endswith(".mkv")):
+             if each.startswith("._") == False and each.startswith("D") and each.endswith(".MP4"):
                 if not os.path.exists(targetDir):
                     os.makedirs(targetDir)
 
@@ -48,8 +53,6 @@ def traverse_directories(root_dir):
                     print("from: " + fromFile + ", to:" + toFile)
                     encode(fromFile, toFile)
                     overwriteCreateTime(fromFile, toFile)
-            else:
-                print(F"skip {each}")
                   
         print()
         

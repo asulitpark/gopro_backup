@@ -3,15 +3,15 @@ import os
 DRIVE="Y:"
 
 # A7M4_PATH = f"{DRIVE}/work/china/A7M4"
-A7M4_PATH = f"{DRIVE}/work/A7M4"
-VIDEO_BITRATE = '20M'
-VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
+# A7M4_PATH = f"{DRIVE}/work/A7M4"
+A7M4_PATH = f"{DRIVE}/work/_thailand_bali/A7M4"
+VIDEO_CODEC = 'hevc_nvenc -pix_fmt p010le -profile:v main10 -preset p7 -tune hq -rc vbr_hq -cq 17 -b:v 0 -maxrate 0 -g 300 -keyint_min 60 -spatial_aq 1 -aq-strength 10 -rc-lookahead 32 '
 
 def encode(fromFile, toFile):
     cmd = ('ffmpeg -y -hwaccel cuda '
           '-i "' + fromFile + '" '
           '-vf vidstabdetect=shakiness=10 '
-          '-c:v ' + VIDEO_CODEC + ' -b:v ' + VIDEO_BITRATE + ' '  
+          '-c:v ' + VIDEO_CODEC + ' ' 
           '-f null -'
            )
     print(cmd)
@@ -20,7 +20,7 @@ def encode(fromFile, toFile):
     cmd = ('ffmpeg -y -hwaccel cuda '
           '-i "' + fromFile + '" '
           '-vf vidstabtransform,unsharp=5:5:0.8:3:3:0.4 '
-          '-c:v ' + VIDEO_CODEC + ' -b:v ' + VIDEO_BITRATE + ' '  
+          '-c:v ' + VIDEO_CODEC + ' '  
           '"' + toFile + '"'
            )
     print(cmd)

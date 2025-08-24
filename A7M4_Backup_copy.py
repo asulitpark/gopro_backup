@@ -2,7 +2,8 @@ import os
 
 DRIVE="Y:"
 
-A7M4_PATH = f"{DRIVE}/work/DJIRaw"
+# A7M4_PATH = f"{DRIVE}/Picture/잘나온 사진"
+A7M4_PATH = f"{DRIVE}/work/_thailand_bali/A7M4"
 VIDEO_BITRATE = '20M'
 VIDEO_CODEC = 'hevc_nvenc -profile:v main10'
 
@@ -35,12 +36,12 @@ def traverse_directories(root_dir):
     for dirpath, dirnames, filenames in os.walk(root_dir):
         dirpath = dirpath.replace("\\", "/")
         print("현재 디렉토리:", dirpath)
-        targetDir = dirpath.replace(f"{DRIVE}/", f"{DRIVE}/DJIOzmo/")
+        targetDir = dirpath.replace(f"{DRIVE}/", f"{DRIVE}/A7M4/")
         print("대상 디렉토리:", targetDir)
 
         # 현재 디렉토리의 파일 출력
         for each in filenames:
-             if each.startswith("._") == False and each.startswith("D") and each.endswith(".MP4"):
+             if each.startswith("._") == False and each.startswith("C") and each.endswith(".MP4"):
                 if not os.path.exists(targetDir):
                     os.makedirs(targetDir)
 
